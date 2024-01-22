@@ -67,7 +67,7 @@ nav a:hover {
 	</nav>
 	<div class=layer>
 		<div class="container">
-			<!-- Add the content of your page here -->
+			
 			<p>Welcome to our beautiful Library System!</p>
 		</div>
 	</div>

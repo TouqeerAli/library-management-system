@@ -1,10 +1,14 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -13,19 +17,23 @@ public class Book {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "book_id")
-	Integer id;
+	private Integer id;
 	@Column(name ="isbn")
-	String isbn;
+	private String isbn;
 	@Column(name = "title")
-	String title;
+	private String title;
 	@Column(name = "author")
-	String author;
+	private String author;
 	@Column(name = "publisher")
-	String publisher;
+	private String publisher;
 	@Column(name = "genre")
-	String genre;
+	private String genre;
 	@Column(name = "available_copies")
-	String availableCopies;
+	private String availableCopies;
+	
+	@ManyToMany(mappedBy = "books")
+	private List<User> users;
+	
 	public Integer getId() {
 		return id;
 	}

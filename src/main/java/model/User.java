@@ -1,10 +1,16 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
@@ -14,15 +20,30 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="user_id")
-	Integer id;
+	private Integer id;
 	@Column(name="fisrt_name")
-	String fistName;
+	private String fistName;
 	@Column(name="last_name")
-	String lastName;
+	private String lastName;
 	@Column(name="email")
-	String email;
+	private String email;
 	@Column(name="password")
-	String password;
+	private String password;
+	@ManyToMany
+	@JoinTable(
+			name ="user_book",
+			joinColumns = {@JoinColumn(name ="user_id")},
+			inverseJoinColumns = {@JoinColumn(name = "book_id")}
+			)
+	private List<Book> books;
+	
+	
+	public List<Book> getBooks() {
+		return books;
+	}
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
 	public Integer getId() {
 		return id;
 	}

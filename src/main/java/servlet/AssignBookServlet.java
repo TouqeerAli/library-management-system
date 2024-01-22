@@ -1,31 +1,34 @@
 package servlet;
 
+import java.awt.print.Book;
+import java.io.IOException;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
-import java.io.IOException;
-import java.util.List;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.cfg.Configuration;
 
-import dao.UserDAO;
-import dao.impl.*;
+import dao.impl.UserBookRelationDAOImpl;
 import model.User;
 
 /**
- * Servlet implementation class UserloginServlet
+ * Servlet implementation class AssignBookServlet
  */
-@WebServlet(urlPatterns = "/UserLogin")
-public class UserLoginServlet extends HttpServlet {
+@WebServlet(urlPatterns = "/AssignBook")
+public class AssignBookServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public UserLoginServlet() {
+    public AssignBookServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -42,26 +45,17 @@ public class UserLoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userName = request.getParameter("username");
-		String password = request.getParameter("password");
 		
 		
-		UserDAO userDAO = new UserDAOImpl();
-		List<User> usersList = userDAO.getUsers();
+		Integer user_id =Integer.parseInt( request.getParameter("user"));
+		Integer book_id = Integer.parseInt(request.getParameter("book"));
 		
-		for(User user : usersList) {
-			if(user.getEmail().equals(userName) && user.getPassword().equals(password)) {
-				HttpSession session = request.getSession();
-	            session.setAttribute("username", userName);
-			RequestDispatcher r =	request.getRequestDispatcher("UserDashboard.jsp");
-				r.forward(request, response);
-			}else if(usersList.indexOf(user) == (usersList.size()-1)){
-
-				HttpSession session = request.getSession();
-				session.setAttribute("error", "Invalid username or password");
-					
-			}
-		}
+		UserBookRelationDAOImpl ub = new UserBookRelationDAOImpl();
+	ub.assign(user_id, book_id);
+	
+	RequestDispatcher dispatcher = request.getRequestDispatcher("/assignBook.jsp");
+	dispatcher.forward(request, response);
+		
 		
 	}
 

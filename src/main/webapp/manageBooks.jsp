@@ -55,7 +55,7 @@ nav h2 {
 
 .container {
 	position: relative;
-	max-width: 1200px;
+	max-width: 1420px;
 	margin: 20px auto;
 	padding: 20px;
 	background-color: rgba(255, 255, 255, 1.0);
@@ -178,16 +178,17 @@ td {
 .btns button {
 	text-decoration: none;
 	padding: 10px 20px;
-	background-color: #4CAF50;
+	background-color: #3498db;
 	color: #fff;
 	white-space: normal;
 	word-wrap: break-word;
 	width: 110px;
 	border-radius: 5px;
+	border: 1px solid black;
 }
 
 .btns button:hover {
-	background-color: #45a049;
+	background-color: #258cd1;
 }
 
 .updateBtn {
@@ -214,10 +215,24 @@ _______________________________________________________
 	position: fixed;
 }
 
+#updateFormBtns{
+	display:flex;
+	flex-direction:column;
+	justify-content:center;
+	align-items:center;
+	
+}
+#operationBtns{
+display:flex;
+	flex-direction:horixontal;
+	justify-content:space-evenly;
+	align-items:center;
+}
 .updatePopup {
 	position: relative;
-	text-align: center;
+	text-align: left;
 	width: 100%;
+	font-weight: bold;
 }
 
 .formPopup {
@@ -226,29 +241,38 @@ _______________________________________________________
 	left: 45%;
 	top: 5%;
 	transform: translate(-50%, 5%);
-	border: 3px solid #999999;
+	border: none;
 	z-index: 9;
 }
 
 .formContainer {
-	max-width: 300px;
-	padding: 20px;
-	background-color: #fff;
+	position: relative;
+	max-width: 600px;
+	margin: 20px auto;
+	padding: 22px;
+	background-color: rgba(255, 255, 255, 1);
+	/* White color with 0.8 opacity */
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 1);
+	border-radius: 5px;
 }
 
-.formContainer input[type=text], .formContainer input[type=password] {
-	width: 100%;
-	padding: 15px;
-	margin: 5px 0 20px 0;
-	border: none;
-	background: #eee;
+.formContainer h2{
+	text-align:center;
+}
+.formContainer input {
+	padding: 8px;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	width:300px;
 }
 
-.formContainer input[type=text]:focus, .formContainer input[type=password]:focus
-	{
-	background-color: #ddd;
-	outline: none;
+.formContainer form{
+	display: flex;
+	flex-direction: column;
 }
+
+
 
 .formContainer .btn {
 	padding: 12px 20px;
@@ -289,9 +313,9 @@ _______________________________________________________
 		<ul>
 			<li><a href="librarianHome.jsp">Home</a></li>
 			<li><a href="GetAllBooks">Manage Books</a></li>
-			<li><a href="#">Assign Book</a></li>
-			<li><a href="#">Return Book</a></li>
-			<li><a href="#">Log out</a></li>
+			<li><a href="assignBook.jsp">Assign Book</a></li>
+			<li><a href="returnBook.jsp">Return Book</a></li>
+			<li><a href="index.jsp">Log out</a></li>
 		</ul>
 	</nav>
 	<div class="layer">
@@ -331,51 +355,80 @@ _______________________________________________________
 						<td><%=book.getAvailableCopies()%></td>
 
 						<td>
-							<div class="btns">
-							<button class="updateButton" onclick="updateForm()">
+							<div class="btns" id="operationBtns">
+							<button class="updateButton" onclick="updateForm('<%=book.getId()%>','<%=book.getIsbn()%>', '<%=book.getTitle()%>', '<%=book.getAuthor()%>', '<%=book.getPublisher()%>', '<%=book.getGenre()%>', '<%=book.getAvailableCopies()%>')">
 									<strong>Update</strong>
 								</button>
 								<br>
+								<!-- delete button-------------------------------------------------- -->
+								<form action="DeleteBook?id=<%=book.getId()%>" method="post">
+									<button type="submit">
+									<strong>Delete</strong>
+								</button>
+								</form>
+							
 							</div>
 								
 							
 							
 							<div class="updatePopup">
 								<div class="formPopup" id="popupForm">
-									<form action="/action_page.php" class="formContainer">
+								<div class="formContainer">
+								
+								
+									<form action="updateBook" method="post">
 										<h2>Update Book</h2>
+										<input type="hidden" id="id" name="id">
 										<label for="isbn">ISBN:</label> 
-										<input type="text" id="isbn" name="isbn" value="<%=book.getIsbn()%>" required> 
+										<input type="text" id="isbn" name="isbn"  required> 
 										<label for="title">Title:</label>
-										<input type="text" id="title" name="title" value="<%=book.getTitle()%>" required> 
+										<input type="text" id="title" name="title" required> 
 										<label for="author">Author:</label> 
-										<input type="text" id="author" name="author" value="<%=book.getAuthor()%>" required> 
+										<input type="text" id="author" name="author"  required> 
 										<label for="publisher">Publisher:</label>
-										<input type="text" id="publisher" name="publisher" value="<%=book.getPublisher()%>" required>
+										<input type="text" id="publisher" name="publisher"required>
 										<label for="genre">Genre:</label> 
-										<input type="text" id="genre" name="genre" value="<%=book.getGenre()%>" required> 
+										<input type="text" id="genre" name="genre" required> 
 										<label for="available_copies">Available Copies:</label> 
-										<input type="text" id="available_copies" name="available_copies" value="<%=book.getAvailableCopies()%>" required>
-										<button type="submit" class="btn">Update</button>
-										<button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+										<input type="text" id="available_copies" name="available_copies" required>
+										<div class="btns" id="updateFormBtns">
+										<button type="submit" >Update</button>
+										<br>
+										<button type="button"  onclick="closeForm()">Close</button>
+										</div>
+										
 									</form>
 								</div>
+								</div>
 							</div> <script>
-								function updateForm() {
-									document.getElementById("popupForm").style.display = "block";
-								}
+							function updateForm(id,isbn, title, author, publisher, genre, availableCopies) {
+				                // Set the input field values in the update form
+				               	document.getElementById("id").value = id;
+				                document.getElementById("isbn").value = isbn;
+				                document.getElementById("title").value = title;
+				                document.getElementById("author").value = author;
+				                document.getElementById("publisher").value = publisher;
+				                document.getElementById("genre").value = genre;
+				                document.getElementById("available_copies").value = availableCopies;
+				                // Display the update form
+				                document.getElementById("popupForm").style.display = "block";
+				            }
+
 								function closeForm() {
 									document.getElementById("popupForm").style.display = "none";
 								}
 								// When the user clicks anywhere outside of the modal, close it
 								window.onclick = function (event) {
-								  let modal = document.getElementById('loginPopup');
+								  let modal = document.getElementById("popupForm");
 								  if (event.target == modal) {
 								    closeForm();
 								  }
 								}
 							</script>
 
+
+							
+							
 						</td>
 					</tr>
 					<%

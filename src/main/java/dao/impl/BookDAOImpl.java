@@ -14,7 +14,7 @@ import model.User;
 public class BookDAOImpl implements BookDAO{
 	Configuration cofiguration = new Configuration().configure("hibernate.cfg.xml");
 	SessionFactory sessionFactory = cofiguration.buildSessionFactory();
-	
+	Session session = sessionFactory.openSession();
 	
 	@Override
 	public List<Book> getAllBooks() {
@@ -55,6 +55,17 @@ public class BookDAOImpl implements BookDAO{
 		transaction.commit();
 		session.close();
 		
+	}
+
+	@Override
+	public Book getBookByName(String name) {
+		
+		return null;
+	}
+
+	@Override
+	public int getTotalBooks() {
+		return session.createQuery("SELECT COUNT(b) FROM Book b", Long.class).getSingleResult().intValue();
 	}
 
 }

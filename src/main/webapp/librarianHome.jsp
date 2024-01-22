@@ -1,3 +1,8 @@
+<%@ page import="dao.BookDAO" %>
+<%@ page import="dao.UserDAO" %>
+<%@ page import="dao.impl.BookDAOImpl" %>
+<%@ page import="dao.impl.UserDAOImpl" %>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -133,11 +138,11 @@ li a:hover {
 	<nav>
 		<h2>Librarian Dashboard</h2>
 		<ul>
-			<li><a href="#">Home</a></li>
+			<li><a href="librarianHome.jsp">Home</a></li>
 			<li><a href="GetAllBooks">Manage Books</a></li>
-			<li><a href="#">Assign Book</a></li>
-			<li><a href="#">Return Book</a></li>
-			<li><a href="#">Log out</a></li>
+			<li><a href="assignBook.java">Assign Book</a></li>
+			<li><a href="returnBook.jsp">Return Book</a></li>
+			<li><a href="index.jsp">Log out</a></li>
 		</ul>
 	</nav>
 <div class="layer">
@@ -145,16 +150,19 @@ li a:hover {
 	<main>
 		<div class="box">
 			<h2>Total Books</h2>
-			<p>20</p>
+			<% 
+				BookDAO bookDAO = new BookDAOImpl();
+			%>
+			<p><%= bookDAO.getTotalBooks() %></p>
 		</div>
 		<div class="box">
 			<h2>Total Users</h2>
-			<p>10</p>
+			<% 
+				UserDAO userDAO = new UserDAOImpl();
+			%>
+			<p><%= userDAO.getTotalUsers() %></p>
 		</div>
-		<div class="box">
-			<h2>Books Assigned</h2>
-			<p>5</p>
-		</div>
+		
 	</main>
 	</div>
 	</div>

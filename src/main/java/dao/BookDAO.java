@@ -9,4 +9,7 @@ public interface BookDAO {
 	void addBook(Book book);
 	void deleteBook(int id);
 	void updateBook(Book book);
+	Book getBookByName(String name);
+	int getTotalBooks();
+	
 }

@@ -117,7 +117,7 @@ nav a:hover {
 	</header>
 
 	<nav>
-		<a href="index.jsp">Home</a> <a href="#">About</a> <a href="userLogin">Login
+		<a href="index.jsp">Home</a> <a href="#">About</a> <a href="userLogin.jsp">Login
 			(User)</a> <a href="librarianLogin.jsp">Login (Librarian)</a>
 	</nav>
 

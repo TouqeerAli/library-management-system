@@ -1,5 +1,11 @@
+<%@ page import="javax.servlet.http.HttpSession" %>
+<%@ page import="dao.impl.*"%>
+<%@ page import="dao.UserDAO"%>
+<%@ page import="model.User"%>
+<%@ page import="model.Book"%>
+<%@ page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +13,7 @@
 <title>Insert title here</title>
 <style type="text/css">
 body {
-    min-height: 100vh;
+	min-height: 100vh;
 	margin: 0;
 	padding: 0;
 	font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -26,7 +32,7 @@ header {
 nav {
 	display: flex;
 	justify-content: center;
-	align-items:center;
+	align-items: center;
 	background-color: #3498db;
 	padding: 5px;
 	box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
@@ -44,6 +50,7 @@ nav a {
 nav a:hover {
 	background-color: #2980b9;
 }
+
 .container {
 	position: relative;
 	max-width: 1200px;
@@ -54,78 +61,104 @@ nav a:hover {
 	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 	border-radius: 5px;
 }
+
 h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
-    text-align:center;
+	font-size: 24px;
+	margin-bottom: 10px;
+	text-align: center;
 }
 
-
-
 main {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    color:white;
+	font-size: 20px;
+	margin-bottom: 10px;
+	color: white;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 
 th, td {
-    padding: 10px;
-    border: 1px solid #ccc;
-    text-align: left;
+	padding: 10px;
+	border: 1px solid #ccc;
+	text-align: left;
 }
 
-thead{
-	background-color:#333;
-	color:white;
-}
-#assignedBooks{
-	color:black;
+thead {
+	background-color: #333;
+	color: white;
 }
 
+#assignedBooks {
+	color: black;
+}
 </style>
 </head>
 
 <body>
-<header>
+	<header>
 
-        <h1>Online Library Management System</h1>
-        
-        
-    </header>
+		<h1>Online Library Management System</h1>
+
+
+	</header>
 
 	<nav>
-	<h2>User Dashboard</h2>
-		
+		<h2>User Dashboard</h2>
+
 		<a href="index.jsp">Log out</a>
 	</nav>
 	<div class="layer">
-	<div class="container">
-	<span><h2 id="assignedBooks">Assigned Books</h2></span>
-    <main>
-        
-        <table>
-            <thead>
-                <tr>
-                    <th>ISBN</th>
-                    <th>Title</th>
-                    <th>Issue Date</th>
-                    <th>Return Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                </tbody>
-        </table>
-    </main>
-    </div>
-    </div>
+		<div class="container">
+			<span><h2 id="assignedBooks">Assigned Books</h2></span>
+			<main>
+
+				<table>
+					<thead>
+						<tr>
+							<th>ISBN</th>
+							<th>Title</th>
+
+						</tr>
+					</thead>
+					<tbody>
+
+						<%
+						
+						if (session.getAttribute("username") != null) {
+							String username = (String) session.getAttribute("username");
+							UserDAO userDAO = new UserDAOImpl();
+							Integer id = userDAO.getIdeByUserName(username);
+							
+							User user = userDAO.getUserWithBooks(id);
+							List<Book> books = user.getBooks();
+					       
+							
+						
+							for(Book book : books) {
+								
+							
+							%>
+							<tr>
+								<td><%=book.getIsbn()%></td>
+								<td><%=book.getTitle()%></td>
+							</tr>
+			
+						<% }%>
+						
+						<% 
+						
+						}
+						%>
+					</tbody>
+				</table>
+			</main>
+		</div>
+	</div>
 </body>
 </html>
